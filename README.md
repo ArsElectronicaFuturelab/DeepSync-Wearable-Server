@@ -6,7 +6,7 @@ Monorepo-style layout containing the C# TCP/REST backend and the lightweight Nod
 
 - `deepsyncwearablev2-server-server/`  
   - C# backend that handles wearable TCP connections, relays data, and exposes control endpoints.
-  - See [Server README](deepsyncwearablev2-server-server/README.md) for more information
+  - See [Server README](deepsyncwearablev2-server/README.md) for more information
 - `deepsyncwearablev2-server-frontend/`
   - Node/Hono service that serves the dashboard, receives wearable snapshots, and forwards simulated control actions to the backend.
   - See [Frontend README](deepsyncwearablev2-server-frontend/README.md) for more information
