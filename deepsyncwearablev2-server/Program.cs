@@ -430,6 +430,32 @@ namespace DeepSyncWearableServer
                 return existing;
             });
 
+            // auto assign ID if not yet set by wearable
+            if (data.Id == -1)
+            {
+                HashSet<int> usedIds = new(_assignedIdsByIp.Values);
+
+                int nextId = 0;
+                while (usedIds.Contains(nextId))
+                {
+                    nextId++;
+                }
+
+                log.Information($"Wearable {ip}: Auto-assigning ID {nextId}");
+
+                // Enqueue ID change command to the wearable
+                if (TryEnqueueWearableCommand(ip, new NewIdCmd(data.Id, nextId)))
+                {
+                    log.Debug($"Wearable {ip}: Enqueued ID change command to {nextId}");
+                }
+                else
+                {
+                    log.Warning($"Wearable {ip}: Failed to enqueue ID change command to {nextId}");
+                }
+
+                return;
+            }
+
             _assignedIdsByIp.AddOrUpdate(ip, data.Id, (key, existing) =>
             {
                 if (existing != data.Id)
@@ -589,6 +615,13 @@ namespace DeepSyncWearableServer
                             continue;
                         }
 
+                        if (wearableData.Id < 0)
+                        {
+                            log.Warning($"App {ip}: Wearable '{wearableIp}' has no " +
+                                $"valid ID yet, skipping!");
+                            continue;
+                        }
+
                         string dataStr = _appProtocol.EncodeData(wearableData);
                         if (string.IsNullOrWhiteSpace(dataStr))
                         {
@@ -599,7 +632,7 @@ namespace DeepSyncWearableServer
                         byte[] dataBytes = Encoding.UTF8.GetBytes(dataStr);
                         await stream.WriteAsync(dataBytes.AsMemory(0, dataBytes.Length), ct);
 
-                        log.Debug($"App {ip}: Sent data to app: {wearableData}");
+                        //log.Debug($"App {ip}: Sent data to app: {wearableData}");
                     }
 
                     await Task.Delay(100, ct);
@@ -687,6 +720,7 @@ namespace DeepSyncWearableServer
                     WearableCommand? cmd = _appProtocol.DecodeCommand();
 
                     if (cmd == null) continue;
+                    //log.Debug("Command: {@Cmd}", cmd);
                     UpdateWearableCommand(ip, cmd);
                 }
             }
@@ -736,6 +770,17 @@ namespace DeepSyncWearableServer
         {
             ILogger log = Log.Logger.WithClassAndMethodNames<DeepSyncServer>();
 
+            // handle ID change command and avoid setting an already assigned ID
+            if (cmd is NewIdCmd newId)
+            {
+                HashSet<int> usedIds = new(_assignedIdsByIp.Values);
+                if (usedIds.Contains(newId.NewId))
+                {
+                    log.Warning($"Discarding ID change command, ID {newId.NewId} already assigned");
+                    return false;
+                }
+            }
+
             if (!_wearableCmdQueueByIp.ContainsKey(ip)
                 || !_wearableSendSignalByIp.ContainsKey(ip))
             {
@@ -772,17 +817,6 @@ namespace DeepSyncWearableServer
             if (string.IsNullOrWhiteSpace(config.Action)) return;
 
             ILogger log = Log.Logger.WithClassAndMethodNames<DeepSyncServer>();
-
-            //SimulatedWearableConfig simConfig = new(
-            //    config.Ip,
-            //    config.Id,
-            //    config.Color,
-            //    config.BaseHeartRate,
-            //    config.Amplitude,
-            //    config.SpeedHz,
-            //    config.IntervalMs
-            //);
-            //simConfig.Ip = config.Ip;
 
             switch (config.Action.ToLowerInvariant())
             {
@@ -842,21 +876,6 @@ namespace DeepSyncWearableServer
             }
         }
 
-        //private static FrontendSimulatedWearable MapSimulatedWearableConfig(
-        //    SimulatedWearableConfig cfg,
-        //    bool deleted)
-        //{
-        //    return new FrontendSimulatedWearable
-        //    {
-        //        Id = cfg.Id,
-        //        BaseHeartRate = cfg.BaseHeartRate,
-        //        Amplitude = cfg.Amplitude,
-        //        SpeedHz = cfg.SpeedHz,
-        //        IntervalMs = cfg.Interval.TotalMilliseconds,
-        //        Color = cfg.Color,
-        //    };
-        //}
-
         private static async Task SimulatedWearableUpdateLoopAsync(CancellationToken ct)
         {
             ILogger log = Log.Logger.WithClassAndMethodNames<DeepSyncServer>();
@@ -873,7 +892,8 @@ namespace DeepSyncWearableServer
                         {
                             if (data == null)
                             {
-                                log.Warning($"Simulated SimulatedWearable {wearableIp}: No data, skipping!");
+                                log.Warning($"Simulated SimulatedWearable {wearableIp}: " +
+                                    $"No data, skipping!");
                                 continue;
                             }
 

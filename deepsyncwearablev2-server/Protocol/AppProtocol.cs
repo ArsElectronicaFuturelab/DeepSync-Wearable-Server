@@ -25,7 +25,7 @@ namespace DeepSyncWearableServer.Protocol
             string frame = buf.Substring(0, end);
             _buffer.Remove(0, end + 1);
 
-            WearableCommand? cmd = JsonSerializer.Deserialize<ColorCmd>(
+            WearableCommand? cmd = JsonSerializer.Deserialize<WearableCommand>(
                 frame,
                 _jsonOptions
             );

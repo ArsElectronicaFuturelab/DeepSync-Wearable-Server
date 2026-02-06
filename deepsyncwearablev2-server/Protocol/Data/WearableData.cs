@@ -2,7 +2,7 @@
 
 namespace DeepSyncWearableServer.Protocol.Data
 {
-    public struct Color(byte r, byte g, byte b)
+    public struct Color(byte r = 0, byte g = 0, byte b = 0)
     {
         public byte R { get; set; } = r;
         public byte G { get; set; } = g;
@@ -59,18 +59,39 @@ namespace DeepSyncWearableServer.Protocol.Data
         //}
     }
 
-    public abstract class WearableCommand(int id)
+    public abstract class WearableCommand
     {
-        public int Id { get; set; } = id;
+        public int Id { get; set; } = -1;
+
+        protected WearableCommand() { }
+
+        protected WearableCommand(int id = -1)
+        {
+            Id = id;
+        }
     }
 
-    public class ColorCmd(int id, Color color) : WearableCommand(id)
+    public class ColorCmd : WearableCommand
     {
-        public Color Color { get; set; } = color;
+        public Color Color { get; set; } = default;
+
+        public ColorCmd() : base() { }
+
+        public ColorCmd(int id = -1, Color color = default) : base(id)
+        {
+            Color = color;
+        }
     }
 
-    class NewIdCmd(int id, int newId) : WearableCommand(id)
+    public class NewIdCmd : WearableCommand
     {
-        public int NewId { get; set; } = newId;
+        public int NewId { get; set; } = -1;
+
+        public NewIdCmd() : base() { }
+
+        public NewIdCmd(int id = -1, int newId = -1) : base(id)
+        {
+            NewId = newId;
+        }
     }
 }

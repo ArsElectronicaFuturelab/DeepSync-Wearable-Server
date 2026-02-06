@@ -1,6 +1,7 @@
+using DeepSyncWearableServer.Protocol.Data;
 using System.Text;
 using System.Text.Json;
-using DeepSyncWearableServer.Protocol.Data;
+using System.Text.Json.Serialization.Metadata;
 
 namespace DeepSyncWearableServer.Protocol
 {
@@ -11,7 +12,9 @@ namespace DeepSyncWearableServer.Protocol
 
         protected readonly JsonSerializerOptions _jsonOptions = new()
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            Converters = { new WearableCommandConverter() },
+            TypeInfoResolver = new DefaultJsonTypeInfoResolver { }
         };
 
         public void ClearBuffer()
