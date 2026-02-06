@@ -22,9 +22,11 @@ namespace DeepSyncWearableServer.Protocol
                 return null;
             }
 
-            string frame = _buffer.Remove(0, end + 1).ToString();
-            WearableCommand? cmd = JsonSerializer.Deserialize<WearableCommand>(
-                frame[..-1],
+            string frame = buf.Substring(0, end);
+            _buffer.Remove(0, end + 1);
+
+            WearableCommand? cmd = JsonSerializer.Deserialize<ColorCmd>(
+                frame,
                 _jsonOptions
             );
 
