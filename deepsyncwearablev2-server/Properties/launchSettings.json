@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "deepsyncwearablev2-server": {
+      "commandName": "Project",
+      "commandLineArgs": "--ip-app 127.0.0.1 --port-app 43397 --ip-wearable 127.0.0.1 --port-wearable 53397 -d"
+    }
+  }
+}

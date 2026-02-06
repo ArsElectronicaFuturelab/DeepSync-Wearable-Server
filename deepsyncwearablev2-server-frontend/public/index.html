@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wearable Server Dashboard</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="connection-bar">
+    <span id="connection-status" class="connection-indicator connection-indicator--disconnected">DeepSync Server Disconnected</span>
+  </div>
+  <main>
+    <section>
+      <header>
+        <h2>Status</h2>
+      </header>
+      <div id="status-grid" class="grid"></div>
+    </section>
+
+    <section>
+      <header class="section-header">
+        <h2>Simulated wearables</h2>
+        <button id="add-sim-btn" type="button">Add simulated wearable</button>
+      </header>
+      <div id="sim-grid" class="grid"></div>
+    </section>
+  </main>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

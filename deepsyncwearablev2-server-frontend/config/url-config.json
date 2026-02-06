@@ -1,0 +1,13 @@
+{
+  "routes": {
+    "state": "/api/state",
+    "wearables": "/api/wearables",
+    "simulatedSnapshot": "/api/wearables/simulated",
+    "simulatedCreate": "/api/control/simulated/create",
+    "simulatedUpdate": "/api/control/simulated/:ip/update",
+    "simulatedDelete": "/api/control/simulated/:ip"
+  },
+  "server": {
+    "backendControlUrl": "http://localhost:8790/api/control"
+  }
+}

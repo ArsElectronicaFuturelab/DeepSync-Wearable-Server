@@ -1,0 +1,209 @@
+.row { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 14px; 
+    margin: 2px 0; 
+}
+
+.editable-row {
+    align-items: center;
+    display: grid;
+    grid-template-columns: 80px 40px 60px;
+    column-gap: 10px;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+}
+
+.editable-row > span {
+    min-width: 80px;
+}
+
+.editable-row .input-group {
+    display: contents;
+}
+
+.editable-row .input-group > * {
+    min-width: 30px;
+}
+
+.editable-row input[type="number"] {
+    width: 100%;
+    min-width: 60px;
+    box-sizing: border-box;
+}
+
+.editable-row input[type="text"] {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.editable-row input[type="color"] {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+}
+
+.card-actions.column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", sans-serif;
+  background: #f6f7fb;
+  color: #1f2a44;
+}
+
+body { 
+    margin: 0; 
+    padding: 0; 
+}
+
+.connection-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px 0 24px;
+}
+
+.connection-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid transparent;
+}
+
+.connection-indicator--connected {
+    background: #dcfce7;
+    color: #065f46;
+    border-color: #34d399;
+}
+
+.connection-indicator--disconnected {
+    background: #fee2e2;
+    color: #991b1b;
+    border-color: #fca5a5;
+}
+
+main { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 24px; 
+}
+
+section { 
+    margin-bottom: 32px; 
+}
+
+.section-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+h2 { 
+    margin: 0 0 12px 0; 
+    font-weight: 600; 
+}
+
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 250px)); 
+    justify-content: start; gap: 12px;
+    border: 2px solid #3b82f6; 
+    padding: 12px; 
+    border-radius: 10px;
+}
+
+.card { 
+    border: 1px solid #e2e5ec; 
+    border-radius: 10px; 
+    background: #ffffff; 
+    padding: 12px 14px; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.04); 
+}
+
+.card strong { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-size: 15px; 
+}
+
+.editable-card {
+    border: 1px solid #e2e5ec; 
+    border-radius: 10px; 
+    background: #fff; 
+    padding: 12px 14px; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.04); 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.color-swatch { width: 18px; 
+    height: 18px; 
+    border-radius: 4px; 
+    border: 1px solid #d0d4dc; 
+}
+
+input[type="number"], input[type="text"], input[type="color"] { 
+    width: 100%; 
+    padding: 6px 8px; 
+    font-size: 14px; 
+    box-sizing: border-box; 
+    border-radius: 6px; 
+    border: 1px solid #ccd1da; 
+}
+
+.card form { 
+    display: grid; 
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    gap: 8px; 
+    margin-top: 8px; 
+}
+
+.card form .full { 
+    grid-column: 1 / -1; 
+}
+
+button { 
+    cursor: pointer; 
+    border: 1px solid #3b82f6; 
+    background: #3b82f6; 
+    color: #fff; 
+    padding: 8px 12px; 
+    border-radius: 8px; 
+    font-weight: 600; 
+}
+
+button.secondary { 
+    background: #fff; 
+    color: #1f2a44; 
+    border-color: #d0d4dc; 
+}
+
+.actions { 
+    display: flex; 
+    gap: 8px; 
+    margin-top: 8px; 
+}
+
+.infotext {
+    margin: 0;
+    color: #6b7280;
+}
+
+.color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: inline-block;
+}
